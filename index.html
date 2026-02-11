@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DOFA Iglesia — Enfoque y Plan</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#0f1731;
+      --panel2:#0c1430;
+      --text:#eaf0ff;
+      --muted:#b8c3ff;
+      --line:rgba(255,255,255,.12);
+      --accent:#7c5cff;
+      --good:#23c55e;
+      --warn:#f59e0b;
+      --bad:#ef4444;
+      --info:#38bdf8;
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 14px;
+      --max: 1120px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--font);
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(124,92,255,.25), transparent 60%),
+        radial-gradient(1100px 650px at 90% 20%, rgba(56,189,248,.18), transparent 55%),
+        radial-gradient(900px 600px at 50% 90%, rgba(35,197,94,.12), transparent 50%),
+        var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit}
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:28px 18px 54px;
+    }
+    header{
+      display:flex;
+      gap:16px;
+      align-items:flex-start;
+      justify-content:space-between;
+      margin-bottom:18px;
+    }
+    .title{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .title h1{
+      margin:0;
+      font-size:clamp(22px, 3vw, 34px);
+      letter-spacing:.2px;
+    }
+    .title p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.4;
+      max-width:72ch;
+    }
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    button{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      box-shadow:0 10px 22px rgba(0,0,0,.25);
+      transition:transform .15s ease, border-color .15s ease;
+      font-weight:650;
+      font-size:14px;
+    }
+    button:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.22)}
+    button.primary{
+      border-color:rgba(124,92,255,.35);
+      background:linear-gradient(180deg, rgba(124,92,255,.45), rgba(124,92,255,.20));
+    }
+    button.danger{
+      border-color:rgba(239,68,68,.35);
+      background:linear-gradient(180deg, rgba(239,68,68,.35), rgba(239,68,68,.14));
+    }
+
+    .grid{
+      display:grid;
+      gap:14px;
+      grid-template-columns: 1.15fr .85fr;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+      header{flex-direction:column}
+      .actions{justify-content:flex-start}
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .card .card-h{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), transparent);
+    }
+    .card .card-h .left{
+      display:flex; gap:10px; align-items:center;
+    }
+    .pill{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background:rgba(0,0,0,.18);
+      white-space:nowrap;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:999px;
+      background:var(--accent);
+      box-shadow:0 0 0 4px rgba(124,92,255,.18);
+      flex:0 0 auto;
+    }
+    .card .card-b{padding:14px 16px}
+
+    .form{
+      display:grid;
+      gap:12px;
+    }
+    .row2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width: 560px){
+      .row2{grid-template-columns:1fr}
+    }
+    label{
+      display:flex;
+      flex-direction:column;
+      gap:7px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    input, textarea{
+      width:100%;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      color:var(--text);
+      border-radius:14px;
+      padding:12px 12px;
+      outline:none;
+      font-size:14px;
+    }
+    textarea{min-height:140px; resize:vertical; line-height:1.5}
+    .hint{
+      font-size:12px;
+      color:rgba(184,195,255,.8);
+      margin-top:-6px;
+      line-height:1.35;
+    }
+
+    .dofa-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width: 980px){
+      .dofa-grid{grid-template-columns:1fr}
+    }
+    .section{
+      border-radius:var(--radius);
+      border:1px solid var(--line);
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    }
+    .section .sh{
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom:1px solid var(--line);
+    }
+    .section .sh strong{font-size:14px}
+    .tag{
+      font-size:12px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.16);
+      color:var(--muted);
+    }
+    .section .sb{padding:12px 14px}
+    .section textarea{min-height:170px}
+
+    .tag.good{border-color:rgba(35,197,94,.35); color:rgba(171,255,204,.95)}
+    .tag.bad{border-color:rgba(239,68,68,.35); color:rgba(255,190,190,.95)}
+    .tag.info{border-color:rgba(56,189,248,.35); color:rgba(195,240,255,.95)}
+    .tag.warn{border-color:rgba(245,158,11,.35); color:rgba(255,226,171,.95)}
+
+    .preview{
+      display:grid;
+      gap:12px;
+    }
+    .preview h2{
+      margin:0;
+      font-size:18px;
+      letter-spacing:.2px;
+    }
+    .preview .meta{
+      display:grid;
+      gap:6px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+    .kpi{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width: 980px){
+      .kpi{grid-template-columns:1fr}
+    }
+    .k{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background:rgba(0,0,0,.18);
+    }
+    .k b{display:block; font-size:12px; color:var(--muted); margin-bottom:6px}
+    .k span{font-size:14px}
+    .mono{font-variant-numeric:tabular-nums}
+    .small{font-size:12px;color:var(--muted);margin-top:8px}
+
+    /* PRINT / PDF */
+    @media print{
+      :root{ --bg:#fff; --text:#111827; --muted:#4b5563; --line:#e5e7eb; --panel:#fff; }
+      body{background:#fff}
+      header .actions{display:none !important}
+      .wrap{padding:0; max-width:none}
+      .card{box-shadow:none}
+      input, textarea{border:1px solid #d1d5db; background:#fff; color:#111827}
+      .pill, .tag{background:#fff}
+      .small{color:#6b7280}
+      .no-print{display:none !important}
+      .section, .card{break-inside:avoid}
+      textarea{min-height:auto}
+      /* Oculta bordes/gradientes intensos */
+      .card, .section{background:#fff}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>DOFA — Enfoque de la Iglesia</h1>
+        <p>
+          Plantilla moderna para llenar <b>Fortalezas, Debilidades, Oportunidades y Amenazas</b> y generar un PDF.
+          (Botón <b>“Imprimir / Guardar PDF”</b> al final).
+        </p>
+      </div>
+      <div class="actions">
+        <button class="primary" id="btnPrint">Imprimir / Guardar PDF</button>
+        <button id="btnSave">Guardar</button>
+        <button id="btnLoad">Cargar</button>
+        <button class="danger" id="btnClear">Limpiar</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT: FORM -->
+      <div class="card">
+        <div class="card-h">
+          <div class="left">
+            <span class="dot"></span>
+            <strong>Información y DOFA</strong>
+          </div>
+          <span class="pill">Iglesia pequeña · Urbana · Jóvenes y familia</span>
+        </div>
+
+        <div class="card-b">
+          <div class="form">
+            <div class="row2">
+              <label>
+                Nombre de la iglesia
+                <input id="churchName" placeholder="Ej: Iglesia Vida y Esperanza" />
+              </label>
+              <label>
+                Ciudad / Barrio
+                <input id="location" placeholder="Ej: Valledupar · Centro" />
+              </label>
+            </div>
+
+            <div class="row2">
+              <label>
+                Fecha
+                <input id="date" type="date" />
+              </label>
+              <label>
+                Responsable (opcional)
+                <input id="owner" placeholder="Ej: Equipo de líderes / Pastor(a)" />
+              </label>
+            </div>
+
+            <label>
+              Enfoque principal (qué quiere lograr la iglesia)
+              <textarea id="focus" placeholder="Ej: Crecer en la Palabra, fortalecer jóvenes y familias, fomentar comunión y discipulado práctico..."></textarea>
+              <div class="hint">Tip: escribe 3–5 líneas claras. Esto será el “resumen” del PDF.</div>
+            </label>
+
+            <div class="dofa-grid">
+              <div class="section">
+                <div class="sh">
+                  <strong>🟢 Fortalezas</strong>
+                  <span class="tag good">Interno · positivo</span>
+                </div>
+                <div class="sb">
+                  <textarea id="strengths" placeholder="• Comunidad familiar y cercana&#10;• Jóvenes con hambre de la Palabra&#10;• Liderazgo accesible&#10;• Servicio y apoyo mutuo"></textarea>
+                  <div class="hint">Usa viñetas (•) para que el PDF quede limpio.</div>
+                </div>
+              </div>
+
+              <div class="section">
+                <div class="sh">
+                  <strong>🔴 Debilidades</strong>
+                  <span class="tag bad">Interno · a mejorar</span>
+                </div>
+                <div class="sb">
+                  <textarea id="weaknesses" placeholder="• Pocos voluntarios para sostener ministerios&#10;• Presencia digital limitada&#10;• Falta de formación de líderes juveniles"></textarea>
+                </div>
+              </div>
+
+              <div class="section">
+                <div class="sh">
+                  <strong>🔵 Oportunidades</strong>
+                  <span class="tag info">Externo · a favor</span>
+                </div>
+                <div class="sb">
+                  <textarea id="opportunities" placeholder="• Jóvenes buscando propósito en la ciudad&#10;• Redes sociales para evangelizar y discipular&#10;• Necesidades familiares y apoyo comunitario"></textarea>
+                </div>
+              </div>
+
+              <div class="section">
+                <div class="sh">
+                  <strong>⚠️ Amenazas</strong>
+                  <span class="tag warn">Externo · riesgo</span>
+                </div>
+                <div class="sb">
+                  <textarea id="threats" placeholder="• Distracciones digitales y falta de tiempo&#10;• Presión cultural contraria a la fe&#10;• Dificultades económicas de miembros"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <label>
+              Acciones prioritarias (3–7 acciones concretas)
+              <textarea id="actionsPlan" placeholder="1) Iniciar grupo pequeño de jóvenes (semanal)&#10;2) Plan mensual familiar (compartir + Palabra)&#10;3) Formar 2–3 líderes juveniles&#10;4) Presencia digital mínima (versículo diario + invitaciones)"></textarea>
+              <div class="hint">Estas acciones convierten el DOFA en un plan real (ideal para presentarlo a la iglesia).</div>
+            </label>
+
+            <div class="row2">
+              <label>
+                Versículo / lema (opcional)
+                <input id="verse" placeholder="Ej: Josué 1:9 / Hechos 2:42" />
+              </label>
+              <label>
+                Próxima revisión (opcional)
+                <input id="nextReview" type="date" />
+              </label>
+            </div>
+
+            <div class="small no-print">
+              ✅ Guardar/Cargar usa <b>localStorage</b> (queda en este navegador). Para PDF: clic en <b>Imprimir / Guardar PDF</b> y elige “Guardar como PDF”.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: PREVIEW -->
+      <div class="card">
+        <div class="card-h">
+          <div class="left">
+            <span class="dot" style="background:var(--info); box-shadow:0 0 0 4px rgba(56,189,248,.18)"></span>
+            <strong>Vista previa</strong>
+          </div>
+          <span class="pill mono" id="wordCount">0 palabras</span>
+        </div>
+
+        <div class="card-b">
+          <div class="preview">
+            <h2 id="pvTitle">Iglesia (sin nombre)</h2>
+            <div class="meta" id="pvMeta">—</div>
+
+            <div class="kpi">
+              <div class="k">
+                <b>Enfoque</b>
+                <span id="pvFocus">—</span>
+              </div>
+              <div class="k">
+                <b>Versículo / lema</b>
+                <span id="pvVerse">—</span>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="sh"><strong>DOFA resumido</strong><span class="tag">Resumen</span></div>
+              <div class="sb" style="display:grid; gap:10px;">
+                <div class="k"><b>Fortalezas</b><span id="pvStrengths">—</span></div>
+                <div class="k"><b>Debilidades</b><span id="pvWeaknesses">—</span></div>
+                <div class="k"><b>Oportunidades</b><span id="pvOpportunities">—</span></div>
+                <div class="k"><b>Amenazas</b><span id="pvThreats">—</span></div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="sh"><strong>Acciones prioritarias</strong><span class="tag">Plan</span></div>
+              <div class="sb">
+                <div class="k"><b>Acciones</b><span id="pvActions">—</span></div>
+                <div class="small" id="pvNextReview"></div>
+              </div>
+            </div>
+
+            <div class="actions no-print" style="justify-content:flex-start; margin-top:6px">
+              <button class="primary" id="btnPrint2">Imprimir / Guardar PDF</button>
+              <button id="btnCopy">Copiar resumen</button>
+            </div>
+
+            <div class="small">
+              Para PDF: en el diálogo de impresión selecciona <b>Destino: Guardar como PDF</b> y activa
+              <b>“Gráficos de fondo”</b> si quieres conservar el estilo.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const fields = [
+      "churchName","location","date","owner","focus",
+      "strengths","weaknesses","opportunities","threats",
+      "actionsPlan","verse","nextReview"
+    ];
+
+    function norm(text){
+      return (text || "").trim();
+    }
+    function asLinePreview(text){
+      const t = norm(text);
+      if(!t) return "—";
+      // Toma primeras 3 líneas / bullets
+      const lines = t.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+      const take = lines.slice(0,3).join(" · ");
+      return take + (lines.length > 3 ? " …" : "");
+    }
+    function setPreview(){
+      const name = norm($("churchName").value) || "Iglesia (sin nombre)";
+      const loc = norm($("location").value);
+      const date = $("date").value;
+      const owner = norm($("owner").value);
+
+      $("pvTitle").textContent = name;
+
+      const metaParts = [];
+      if(loc) metaParts.push("📍 " + loc);
+      if(date) metaParts.push("📅 " + date);
+      if(owner) metaParts.push("👤 " + owner);
+      $("pvMeta").textContent = metaParts.length ? metaParts.join("  ·  ") : "—";
+
+      $("pvFocus").textContent = norm($("focus").value) || "—";
+      $("pvVerse").textContent = norm($("verse").value) || "—";
+
+      $("pvStrengths").textContent = asLinePreview($("strengths").value);
+      $("pvWeaknesses").textContent = asLinePreview($("weaknesses").value);
+      $("pvOpportunities").textContent = asLinePreview($("opportunities").value);
+      $("pvThreats").textContent = asLinePreview($("threats").value);
+
+      $("pvActions").textContent = asLinePreview($("actionsPlan").value);
+
+      const nr = $("nextReview").value;
+      $("pvNextReview").textContent = nr ? ("Siguiente revisión: " + nr) : "";
+
+      // contador palabras (aprox)
+      const all = fields.map(f => (f==="date"||f==="nextReview") ? "" : ( $(f).value || "" )).join(" ");
+      const wc = all.trim() ? all.trim().split(/\s+/).length : 0;
+      $("wordCount").textContent = wc + " palabras";
+    }
+
+    function save(){
+      const data = {};
+      fields.forEach(f => data[f] = $(f).value || "");
+      localStorage.setItem("dofa_iglesia", JSON.stringify(data));
+      alert("Guardado en este navegador ✅");
+    }
+
+    function load(){
+      const raw = localStorage.getItem("dofa_iglesia");
+      if(!raw){ alert("No hay nada guardado aún."); return; }
+      try{
+        const data = JSON.parse(raw);
+        fields.forEach(f => { if(data[f] !== undefined) $(f).value = data[f]; });
+        setPreview();
+        alert("Cargado ✅");
+      }catch(e){
+        alert("No se pudo cargar (datos corruptos).");
+      }
+    }
+
+    function clearAll(){
+      if(!confirm("¿Seguro que quieres limpiar todo?")) return;
+      fields.forEach(f => $(f).value = "");
+      setPreview();
+      localStorage.removeItem("dofa_iglesia");
+    }
+
+    function printPDF(){
+      // Recomiendo: en impresión elegir "Guardar como PDF"
+      window.print();
+    }
+
+    function copySummary(){
+      const name = norm($("churchName").value) || "Iglesia (sin nombre)";
+      const loc = norm($("location").value);
+      const date = $("date").value;
+
+      const text =
+`DOFA — ${name}
+${loc ? "Lugar: " + loc : ""}
+${date ? "Fecha: " + date : ""}
+
+Enfoque:
+${norm($("focus").value)}
+
+Fortalezas:
+${norm($("strengths").value)}
+
+Debilidades:
+${norm($("weaknesses").value)}
+
+Oportunidades:
+${norm($("opportunities").value)}
+
+Amenazas:
+${norm($("threats").value)}
+
+Acciones prioritarias:
+${norm($("actionsPlan").value)}
+${norm($("verse").value) ? ("\nVersículo/Lema: " + norm($("verse").value)) : ""}`.trim();
+
+      navigator.clipboard.writeText(text).then(()=>{
+        alert("Resumen copiado ✅");
+      }).catch(()=>{
+        alert("No se pudo copiar. (Permisos del navegador)");
+      });
+    }
+
+    // Defaults
+    (function init(){
+      // Pone fecha de hoy si está vacío
+      const today = new Date();
+      const iso = today.toISOString().slice(0,10);
+      if(!$("date").value) $("date").value = iso;
+
+      fields.forEach(f => $(f).addEventListener("input", setPreview));
+
+      $("btnSave").addEventListener("click", save);
+      $("btnLoad").addEventListener("click", load);
+      $("btnClear").addEventListener("click", clearAll);
+      $("btnPrint").addEventListener("click", printPDF);
+      $("btnPrint2").addEventListener("click", printPDF);
+      $("btnCopy").addEventListener("click", copySummary);
+
+      setPreview();
+    })();
+  </script>
+</body>
+</html>
